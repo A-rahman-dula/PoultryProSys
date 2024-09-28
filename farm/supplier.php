@@ -159,6 +159,12 @@ $suppliers = $supplier->readAll();
             </div>
 
             <div class="col-lg-7 col-md-10 col-12 mb-3 my-2">
+                <div class="row p-2">
+                    <div class="col-sm-12">
+                        <input type="text" id="searchSupplierInput" class="form-control" placeholder="Search supplier..." onkeyup="searchSupplier()">
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #3E497A;">
                         <h5 class="card-title p-2 text-white mb-0"><strong style="font-size:25px;">Supplier Details</strong></h5>
@@ -213,4 +219,40 @@ $frame->last_part();
             window.location.href = "delete_supplier.php?sup_id=" + sup_id;
         }
     }
+
+    function searchSupplier() {
+        // Get the value from the input field
+        var input = document.getElementById("searchSupplierInput");
+        var filter = input.value.toUpperCase();
+
+        // Get the table and all its rows
+        var table = document.querySelector(".table");
+        var rows = table.getElementsByTagName("tr");
+
+        // Loop through all rows in the table (starting from 1, skipping the header row)
+        for (var i = 1; i < rows.length; i++) {
+            var supplierName = rows[i].getElementsByTagName("td")[0]; // Supplier Name
+            var contact = rows[i].getElementsByTagName("td")[1]; // Contact
+            var email = rows[i].getElementsByTagName("td")[2]; // Email
+
+            // Check if the row matches the search query
+            if (supplierName || contact || email) {
+                var nameValue = supplierName.textContent || supplierName.innerText;
+                var contactValue = contact.textContent || contact.innerText;
+                var emailValue = email.textContent || email.innerText;
+
+                // Show row if the input matches the supplier name, contact, or email
+                if (
+                        nameValue.toUpperCase().indexOf(filter) > -1 ||
+                        contactValue.toUpperCase().indexOf(filter) > -1 ||
+                        emailValue.toUpperCase().indexOf(filter) > -1
+                        ) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
+

@@ -239,7 +239,7 @@ class Product implements crud {
         $query = "SELECT SUM(quantity) AS productOrder FROM `orders` WHERE product_id = :product_id AND status = :status";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':product_id', $product_id);
-        $stmt->bindValue(':status', 1); // Use bindValue for constant values
+        $stmt->bindValue(':status', 1); 
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

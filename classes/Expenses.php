@@ -26,6 +26,7 @@ class Expenses {
         if ($this->from_date && $this->to_date) {
             $query .= " AND date BETWEEN :from_date AND :to_date";
         }
+
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':user_id', $this->user_id);
         if ($this->from_date && $this->to_date) {
@@ -42,7 +43,7 @@ class Expenses {
             $result['type'] = 'bird';
             $result['date'] = $result['date'];
             $result['detail'] = "Import " . $result['bird_type'];
-            $result['paid_to'] = $bird->getSupplier($result['sup_id'], $this->db); 
+            $result['paid_to'] = $bird->getSupplier($result['sup_id'], $this->db);
             $result['amount'] = $result['total_cost'];
         }
 
@@ -133,7 +134,7 @@ class Expenses {
 
         // Sort data by date
         usort($all_data, function ($a, $b) {
-            return strtotime($a['date']) - strtotime($b['date']);
+            return strtotime($b['date']) - strtotime($a['date']);
         });
 
         return $all_data;

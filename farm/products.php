@@ -213,6 +213,12 @@ $products = $product->read($user_id);
             </div>
 
             <div class="col-lg-6 col-md-10 col-12 mb-3 my-2">
+                <div class="row p-2">
+                    <div class="col-sm-12">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search for products..." onkeyup="searchProduct()">
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #3E497A;">
                         <h5 class="card-title p-2 text-white mb-0"><strong style="font-size:25px;">Product Details</strong></h5>
@@ -267,4 +273,38 @@ $products = $product->read($user_id);
         }
     }
 
+    function searchProduct() {
+        // Get the input value
+        var input = document.getElementById("searchInput");
+        var filter = input.value.toUpperCase();
+
+        // Get the table and rows
+        var table = document.querySelector(".table");
+        var rows = table.getElementsByTagName("tr");
+
+        // Loop through all table rows (except the first one, which is the header)
+        for (var i = 1; i < rows.length; i++) {
+            var productName = rows[i].getElementsByTagName("td")[0];
+            var productPrice = rows[i].getElementsByTagName("td")[1];
+            var productUnit = rows[i].getElementsByTagName("td")[2];
+
+            // Check if the current row matches the search query
+            if (productName || productPrice || productUnit) {
+                var nameValue = productName.textContent || productName.innerText;
+                var priceValue = productPrice.textContent || productPrice.innerText;
+                var unitValue = productUnit.textContent || productUnit.innerText;
+
+                // If the input matches any of these values, show the row
+                if (
+                        nameValue.toUpperCase().indexOf(filter) > -1 ||
+                        priceValue.toUpperCase().indexOf(filter) > -1 ||
+                        unitValue.toUpperCase().indexOf(filter) > -1
+                        ) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>

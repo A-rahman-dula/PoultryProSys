@@ -11,6 +11,7 @@ require_once '../classes/Incomes.php';
 require_once '../classes/Stocks.php';
 require_once '../classes/Product.php';
 require_once '../classes/Order.php';
+require_once '../classes/Notification.php';
 
 
 if (!isset($_SESSION['user_id'])) {
@@ -46,6 +47,11 @@ $today_orders = $order->todayOrders(date('Y-m-d'), $farm['user_id']);
 
 $product = new Product($db);
 $products = $product->read($user_id);
+
+$notification = new Notification($db);
+$notification->setUser_id($user_id);
+$notificationCount = $notification->getAllNotificationCount();
+$notifications = $notification->getAllNotifications();
 ?>
 <style>
     .card-title {
@@ -55,10 +61,62 @@ $products = $product->read($user_id);
     .card-text{
         font-size: 20px; 
         font-weight: bold;
+    }
+    #noti_number {
+        font-size: 24px;
+        position: relative;
+        cursor: pointer;
+    }
+    #noti_number::after {
+        content: "<?php echo $notificationCount; ?>";
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: red;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+    }
+    #notification_list {
+        display: none;
+        background: black;
+        color: white;
+        position: absolute;
+        right: 75px;
+        top: 100px;
+        width: 400px;
+        border: 1px solid #ddd;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+    #notification_list ul {
+        list-style: none;
+        margin: 0;
+        padding: 5px;
+    }
+    #notification_list li {
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+    #notification_list li:last-child {
+        border-bottom: none;
     }    
 </style>
 <main class="col-lg-10 col-md-9 col-sm-8 p-0 vh-100 overflow-auto">
     <div class="container">
+        <div class="row my-4 mx-4 text-center">
+            <div style="text-align: right;">
+                <i class="bi bi-bell-fill" aria-hidden="true" id="noti_number"></i>
+            </div>
+        </div>
+        <div id="notification_list">
+            <ul>
+                <?php foreach ($notifications as $notification): ?>
+                    <li><?php echo $notification; ?> is low in stock!</li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
         <div class="row my-4 mx-4 text-center">
 
             <div class="col-lg-3 col-md-6 col-12 mb-3">
@@ -184,6 +242,16 @@ $frame->last_part();
             form.submit();
         }
     }
+</script>
+<script>
+    document.getElementById('noti_number').addEventListener('click', function () {
+        var notificationList = document.getElementById('notification_list');
+        if (notificationList.style.display === 'none' || notificationList.style.display === '') {
+            notificationList.style.display = 'block';
+        } else {
+            notificationList.style.display = 'none';
+        }
+    });
 </script>
 
 

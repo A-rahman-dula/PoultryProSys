@@ -133,7 +133,14 @@ class Order {
         $query = "SELECT * FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $all_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Sort data by date
+        usort($all_orders, function ($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
+
+        return $all_orders;
     }
 
     // Method to read a single order

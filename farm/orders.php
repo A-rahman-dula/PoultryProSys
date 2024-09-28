@@ -38,7 +38,7 @@ $frame->first_part($farm);
             <div class="col-lg-12 col-md-12 col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #3E497A;">
-                        <h5 class="card-title p-2 text-white mb-0"><strong style="font-size:25px;">Batch Details</strong></h5>
+                        <h5 class="card-title p-2 text-white mb-0"><strong style="font-size:25px;">Order Details</strong></h5>
                         <div>
                             <a href="add_order.php" class="btn btn-outline-light"><i class="bi bi-house-add-fill"></i> Add New Order</a>
                         </div>
